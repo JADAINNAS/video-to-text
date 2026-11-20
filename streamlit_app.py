@@ -8,6 +8,26 @@ import streamlit as st
 import analysis_engine as engine
 
 st.set_page_config(page_title='영상 자막·음성 분석', layout='wide')
+st.markdown("<style>div[data-testid='stVideo']{max-width:640px;margin:auto}video{max-height:300px;object-fit:contain}</style>", unsafe_allow_html=True)
+if 'view' not in st.session_state:
+    st.session_state['view'] = 'intro'
+if st.session_state['view'] == 'intro':
+    _, center, _ = st.columns([1, 4, 1])
+    with center:
+        st.caption('프로그램 안내')
+        st.title('영상 속 자막과 목소리를 시간별 텍스트로 정리하세요.')
+        st.write('영상을 업로드하면 CG 자막과 발화 내용을 한 표에 정리합니다. GPT-6 Luna로 화면을 검토하고 카드 상품 언급과 오탈자 후보를 확인한 뒤 엑셀로 저장할 수 있습니다.')
+        st.info('영상 업로드 → 음성·화면 분석 → GPT 검토 → 엑셀 저장')
+        st.write('처음이라면 다음 화면의 ‘시현 시작 · 15초’로 체험해 보세요.')
+        st.caption('분석 결과는 영상과 대조해 확인해 주세요. GPT 검토 시 화면 이미지와 인식 텍스트가 OpenAI로 전송되며 API 사용료가 발생합니다.')
+        if st.button('다음 · 프로그램 시작 →', type='primary'):
+            st.session_state['view'] = 'app'
+            st.rerun()
+    st.stop()
+if st.button('← 프로그램 소개'):
+    st.session_state['view'] = 'intro'
+    st.rerun()
+
 DEMO_VIDEO = Path(__file__).resolve().parent / 'assets' / '히트 상품에 숨겨진 비밀! 현대카드 데이터 사이언스의 힘.mp4'
 heading, demo_column = st.columns([4, 1])
 with heading:
